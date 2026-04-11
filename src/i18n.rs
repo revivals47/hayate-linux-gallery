@@ -30,7 +30,7 @@ impl L {
     pub fn tab_layout(&self) -> &str { match self.lang { Lang::En => "Layout", Lang::Ja => "配置" } }
     pub fn tab_nav(&self) -> &str { match self.lang { Lang::En => "Nav", Lang::Ja => "案内" } }
     pub fn tab_display(&self) -> &str { match self.lang { Lang::En => "Display", Lang::Ja => "表示" } }
-    pub fn tab_overlay(&self) -> &str { match self.lang { Lang::En => "Overlay", Lang::Ja => "重畳" } }
+    pub fn tab_overlay(&self) -> &str { match self.lang { Lang::En => "Overlay", Lang::Ja => "オーバーレイ" } }
     pub fn tab_new(&self) -> &str { match self.lang { Lang::En => "New", Lang::Ja => "新規" } }
 
     // Basic page

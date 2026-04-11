@@ -1,4 +1,5 @@
-//! Input widgets page: TextInput, Slider, SpinButton, Dropdown, ColorPicker.
+//! Input widgets: TextInput, TextArea, Slider, SpinButton, Dropdown,
+//! RadioGroup, ColorPicker.
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -7,8 +8,8 @@ use hayate_ui::render::TextEngine;
 use hayate_ui::style::theme::Color;
 use hayate_ui::widget::core::Widget;
 use hayate_ui::widget::{
-    TextWidget, TextInputWidget, SliderWidget, SpinButtonWidget,
-    DropdownWidget, ColorPickerWidget,
+    TextWidget, TextInputWidget, TextAreaWidget, SliderWidget, SpinButtonWidget,
+    DropdownWidget, RadioGroupWidget, ColorPickerWidget,
     HStack, VStack, Padding,
 };
 
@@ -22,42 +23,57 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
         Box::new(TextWidget::new(text, 13.0).with_engine(engine.clone()))
     };
 
+    // TextInput
     let input_row = HStack::new(16.0)
         .add(Box::new(TextInputWidget::new(engine.clone())
             .with_placeholder(l.type_here()).with_width(250.0)))
         .add(Box::new(TextInputWidget::new(engine.clone())
             .with_placeholder("Input 2").with_width(250.0)));
 
-    let slider_section = VStack::new(8.0)
-        .add(label(l.continuous()))
-        .add(Box::new(SliderWidget::new(0.0, 100.0, 50.0)))
-        .add(label(l.stepped()))
-        .add(Box::new(SliderWidget::new(0.0, 1.0, 0.3).with_step(0.1)));
+    // TextArea
+    let textarea = TextAreaWidget::new()
+        .with_placeholder(l.textarea_placeholder())
+        .with_size(500.0, 80.0);
 
-    let spin_row = HStack::new(16.0)
-        .add(label(l.integer()))
-        .add(Box::new(SpinButtonWidget::new(0.0, 100.0, 25.0, 1.0)))
-        .add(label(l.float_val()))
-        .add(Box::new(SpinButtonWidget::new(0.0, 1.0, 0.5, 0.05)));
+    // Slider
+    let slider_section = HStack::new(24.0)
+        .add(Box::new(VStack::new(4.0)
+            .add(label(l.continuous()))
+            .add(Box::new(SliderWidget::new(0.0, 100.0, 50.0)))))
+        .add(Box::new(VStack::new(4.0)
+            .add(label(l.stepped()))
+            .add(Box::new(SliderWidget::new(0.0, 1.0, 0.3).with_step(0.1)))));
 
-    let dropdown_row = HStack::new(16.0)
-        .add(label(l.city()))
-        .add(Box::new(DropdownWidget::new(vec![
-            "Tokyo".into(), "Osaka".into(), "Kyoto".into(),
-            "Nagoya".into(), "Fukuoka".into(),
-        ]).with_selected(0)));
+    // SpinButton + Dropdown + RadioGroup row
+    let controls_row = HStack::new(16.0)
+        .add(Box::new(VStack::new(4.0)
+            .add(label(l.spin_button()))
+            .add(Box::new(SpinButtonWidget::new(0.0, 100.0, 25.0, 1.0)))))
+        .add(Box::new(VStack::new(4.0)
+            .add(label(l.dropdown()))
+            .add(Box::new(DropdownWidget::new(vec![
+                "Tokyo".into(), "Osaka".into(), "Kyoto".into(),
+                "Nagoya".into(), "Fukuoka".into(),
+            ]).with_selected(0)))))
+        .add(Box::new(VStack::new(4.0)
+            .add(label(l.radio_group()))
+            .add(Box::new(RadioGroupWidget::new(&["Small", "Medium", "Large"])
+                .with_selected(1)
+                .with_engine(engine.clone())))));
 
-    let content = VStack::new(16.0)
+    // ColorPicker
+    let picker = ColorPickerWidget::new(Color::rgba(100, 150, 200, 255));
+
+    let content = VStack::new(12.0)
         .add(section(l.text_input()))
         .add(Box::new(input_row))
+        .add(section(l.text_area()))
+        .add(Box::new(textarea))
         .add(section(l.slider()))
         .add(Box::new(slider_section))
-        .add(section(l.spin_button()))
-        .add(Box::new(spin_row))
-        .add(section(l.dropdown()))
-        .add(Box::new(dropdown_row))
+        .add(Box::new(controls_row))
         .add(section(l.color_picker()))
-        .add(Box::new(ColorPickerWidget::new(Color::rgba(100, 150, 200, 255))));
+        .add(Box::new(picker));
 
-    Box::new(Padding::all(20.0, Box::new(content)))
+    Box::new(Padding::all(16.0, Box::new(content)))
 }

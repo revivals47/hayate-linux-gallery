@@ -27,8 +27,7 @@ fn main() {
         .add_tab(TabEntry::new(l.tab_layout(), pages::layout::build(engine.clone(), &l)))
         .add_tab(TabEntry::new(l.tab_nav(), pages::navigation::build(engine.clone(), &l)))
         .add_tab(TabEntry::new(l.tab_display(), pages::display::build(engine.clone(), &l)))
-        .add_tab(TabEntry::new(l.tab_overlay(), pages::overlay::build(engine.clone(), &l)))
-        .add_tab(TabEntry::new(l.tab_new(), pages::new_widgets::build(engine.clone(), &l)));
+        .add_tab(TabEntry::new(l.tab_overlay(), pages::overlay::build(engine.clone(), &l)));
 
     let root: Box<dyn Widget> = Box::new(
         VStack::new(0.0)

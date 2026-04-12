@@ -8,19 +8,25 @@ use hayate_ui::render::TextEngine;
 use hayate_ui::style::theme::Color;
 use hayate_ui::widget::core::Widget;
 use hayate_ui::widget::{
-    TextWidget, TextInputWidget, TextAreaWidget, SliderWidget, SpinButtonWidget,
+    AppTheme, TextWidget, TextInputWidget, TextAreaWidget, SliderWidget, SpinButtonWidget,
     DropdownWidget, RadioGroupWidget, ColorPickerWidget,
     HStack, VStack, Padding,
 };
 
 use crate::i18n::L;
 
-pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
+pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -> Box<dyn Widget> {
+    let themed = theme.is_some();
+    let (sec_size, lbl_size) = if themed { (14.0, 11.0) } else { (18.0, 13.0) };
     let section = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 18.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, sec_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
     };
     let label = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 13.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, lbl_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
     };
 
     // TextInput
@@ -36,25 +42,23 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
         .with_size(500.0, 80.0);
 
     // Slider
+    let mut s1 = SliderWidget::new(0.0, 100.0, 50.0);
+    let mut s2 = SliderWidget::new(0.0, 1.0, 0.3).with_step(0.1);
+    if let Some(t) = theme { s1 = s1.theme(t.slider.clone()); s2 = s2.theme(t.slider.clone()); }
     let slider_section = HStack::new(24.0)
-        .add(Box::new(VStack::new(4.0)
-            .add(label(l.continuous()))
-            .add(Box::new(SliderWidget::new(0.0, 100.0, 50.0)))))
-        .add(Box::new(VStack::new(4.0)
-            .add(label(l.stepped()))
-            .add(Box::new(SliderWidget::new(0.0, 1.0, 0.3).with_step(0.1)))));
+        .add(Box::new(VStack::new(4.0).add(label(l.continuous())).add(Box::new(s1))))
+        .add(Box::new(VStack::new(4.0).add(label(l.stepped())).add(Box::new(s2))));
 
     // SpinButton + Dropdown + RadioGroup row
+    let mut sp = SpinButtonWidget::new(0.0, 100.0, 25.0, 1.0);
+    let mut dd = DropdownWidget::new(vec![
+        "Tokyo".into(), "Osaka".into(), "Kyoto".into(),
+        "Nagoya".into(), "Fukuoka".into(),
+    ]).with_selected(0);
+    if let Some(t) = theme { sp = sp.theme(t.spin.clone()); dd = dd.theme(t.dropdown.clone()); }
     let controls_row = HStack::new(16.0)
-        .add(Box::new(VStack::new(4.0)
-            .add(label(l.spin_button()))
-            .add(Box::new(SpinButtonWidget::new(0.0, 100.0, 25.0, 1.0)))))
-        .add(Box::new(VStack::new(4.0)
-            .add(label(l.dropdown()))
-            .add(Box::new(DropdownWidget::new(vec![
-                "Tokyo".into(), "Osaka".into(), "Kyoto".into(),
-                "Nagoya".into(), "Fukuoka".into(),
-            ]).with_selected(0)))))
+        .add(Box::new(VStack::new(4.0).add(label(l.spin_button())).add(Box::new(sp))))
+        .add(Box::new(VStack::new(4.0).add(label(l.dropdown())).add(Box::new(dd))))
         .add(Box::new(VStack::new(4.0)
             .add(label(l.radio_group()))
             .add(Box::new(RadioGroupWidget::new(&["Small", "Medium", "Large"])

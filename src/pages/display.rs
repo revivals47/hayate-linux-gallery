@@ -8,7 +8,7 @@ use hayate_ui::render::TextEngine;
 use hayate_ui::scroll::delegate::ItemRect;
 use hayate_ui::widget::core::Widget;
 use hayate_ui::widget::{
-    TextWidget, ProgressBarWidget, ImageWidget,
+    AppTheme, TextWidget, ProgressBarWidget, ImageWidget,
     StatusBar, StatusItem,
     CanvasViewWidget, ListViewWidget, ThumbnailListWidget,
     HStack, VStack, Padding,
@@ -33,22 +33,29 @@ fn make_checkerboard() -> (Vec<u8>, u32, u32) {
     (buf, w, h)
 }
 
-pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
+pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -> Box<dyn Widget> {
+    let themed = theme.is_some();
+    let (sec_size, lbl_size) = if themed { (14.0, 11.0) } else { (18.0, 13.0) };
     let section = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 18.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, sec_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
     };
     let label = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 13.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, lbl_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
     };
 
     // ProgressBar row
+    let mut p1 = ProgressBarWidget::new(0.3);
+    let mut p2 = ProgressBarWidget::new(0.75);
+    let mut p3 = ProgressBarWidget::new(1.0);
+    if let Some(t) = theme { p1 = p1.theme(t.progress.clone()); p2 = p2.theme(t.progress.clone()); p3 = p3.theme(t.progress.clone()); }
     let progress_row = HStack::new(24.0)
-        .add(Box::new(VStack::new(4.0)
-            .add(label("30%")).add(Box::new(ProgressBarWidget::new(0.3)))))
-        .add(Box::new(VStack::new(4.0)
-            .add(label("75%")).add(Box::new(ProgressBarWidget::new(0.75)))))
-        .add(Box::new(VStack::new(4.0)
-            .add(label("100%")).add(Box::new(ProgressBarWidget::new(1.0)))));
+        .add(Box::new(VStack::new(4.0).add(label("30%")).add(Box::new(p1))))
+        .add(Box::new(VStack::new(4.0).add(label("75%")).add(Box::new(p2))))
+        .add(Box::new(VStack::new(4.0).add(label("100%")).add(Box::new(p3))));
 
     // Image + CanvasView row
     let (pixels, iw, ih) = make_checkerboard();

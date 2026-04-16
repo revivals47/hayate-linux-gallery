@@ -1,5 +1,5 @@
 //! Display widgets: ProgressBar, ImageWidget, StatusBar, CanvasView,
-//! ListView, ThumbnailList.
+//! ListView, ThumbnailList. With live state + stress-case item counts.
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -15,6 +15,7 @@ use hayate_ui::widget::{
 };
 
 use crate::i18n::L;
+use crate::live::LiveText;
 
 fn make_checkerboard() -> (Vec<u8>, u32, u32) {
     let (w, h) = (128u32, 128u32);
@@ -47,7 +48,7 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -
         Box::new(w)
     };
 
-    // ProgressBar row
+    // ── ProgressBar row ──
     let mut p1 = ProgressBarWidget::new(0.3);
     let mut p2 = ProgressBarWidget::new(0.75);
     let mut p3 = ProgressBarWidget::new(1.0);
@@ -57,7 +58,7 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -
         .add(Box::new(VStack::new(4.0).add(label("75%")).add(Box::new(p2))))
         .add(Box::new(VStack::new(4.0).add(label("100%")).add(Box::new(p3))));
 
-    // Image + CanvasView row
+    // ── Image + CanvasView row ──
     let (pixels, iw, ih) = make_checkerboard();
     let mut img = ImageWidget::new();
     img.load_from_rgba(&pixels, iw, ih);
@@ -80,16 +81,56 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -
         .add(Box::new(VStack::new(4.0)
             .add(label(l.canvas_view())).add(Box::new(canvas))));
 
-    // ListView + ThumbnailList row
-    let listview = ListViewWidget::new(30, 20.0)
-        .with_size(300.0, 120.0)
-        .with_paint_item(|renderer, engine, rect, index, selected| {
+    // ── ListView: 1000 items (stress case) + live selection readout ──
+    let sel_state: Rc<RefCell<Vec<usize>>> = Rc::new(RefCell::new(vec![]));
+    let sel_state2 = sel_state.clone();
+
+    // Theme-aware paint_item — Win95 uses white bg with navy selection;
+    // dark theme uses the existing slate colors.
+    let listview_item_style = if themed {
+        // Win95 style: white rows, navy selection, black text.
+        (255u8, 255u8, 0u8, 0u8, 128u8, 0u8, 0u8, 0u8, 255u8, 255u8, 255u8)
+        //  ^bg_even,      bg_odd,       sel_bg(navy),  text,       sel_text
+    } else {
+        (36u8, 36u8, 42u8, 42u8, 64u8, 220u8, 220u8, 220u8, 255u8, 255u8, 255u8)
+    };
+
+    let listview = ListViewWidget::new(1000, 20.0)
+        .with_size(300.0, 160.0)
+        .with_paint_item(move |renderer, engine, rect, index, selected| {
+            let (
+                bg_e_r, bg_e_gb, bg_o_r, bg_o_gb, sel_b,
+                txt_r, txt_g, txt_b,
+                sel_txt_r, sel_txt_g, sel_txt_b,
+            ) = listview_item_style;
+            let (br, bg, bb) = if selected {
+                (0u8, 0u8, sel_b)
+            } else if index % 2 == 0 {
+                (bg_e_r, bg_e_gb, bg_e_gb.saturating_add(4))
+            } else {
+                (bg_o_r, bg_o_gb, bg_o_gb.saturating_add(4))
+            };
+            let (tr, tg, tb) = if selected {
+                (sel_txt_r, sel_txt_g, sel_txt_b)
+            } else {
+                (txt_r, txt_g, txt_b)
+            };
+            renderer.fill_rect(&rect, br, bg, bb, 255);
             let lbl = format!("Item #{}", index + 1);
-            let bg = if selected { 64 } else if index % 2 == 0 { 36 } else { 42 };
-            renderer.fill_rect(&rect, bg, bg, bg + 4, 255);
             renderer.draw_text(engine, &lbl, rect.x + 6.0, rect.y + 1.0,
-                12.0, 18.0, 220, 220, 220, rect.width);
-        });
+                12.0, 18.0, tr, tg, tb, rect.width);
+        })
+        .on_select(move |sel| { *sel_state2.borrow_mut() = sel.to_vec(); });
+
+    let sel_live = LiveText::new(sel_state.clone(),
+        |v: &Vec<usize>| if v.is_empty() { "No selection".to_string() }
+                          else { format!("Selected: #{}", v[0] + 1) },
+        lbl_size)
+        .with_engine(engine.clone())
+        .with_color(if themed { 0 } else { 220 },
+                    if themed { 0 } else { 220 },
+                    if themed { 0 } else { 220 })
+        .with_width(180.0);
 
     let thumbs = ThumbnailListWidget::new()
         .with_item_count(10)
@@ -103,11 +144,13 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -
 
     let list_row = HStack::new(16.0)
         .add(Box::new(VStack::new(4.0)
-            .add(label(l.list_view())).add(Box::new(listview))))
+            .add(label(l.list_view()))
+            .add(Box::new(listview))
+            .add(Box::new(sel_live))))
         .add(Box::new(VStack::new(4.0)
             .add(label(l.thumb_list())).add(Box::new(thumbs))));
 
-    // StatusBar
+    // ── StatusBar ──
     let mut status = StatusBar::new(24.0);
     status.add_left(StatusItem::text("Ready"));
     status.add_center(StatusItem::text("hayate-gallery"));

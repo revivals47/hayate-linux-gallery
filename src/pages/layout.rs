@@ -6,29 +6,40 @@ use std::rc::Rc;
 use hayate_ui::render::TextEngine;
 use hayate_ui::widget::core::Widget;
 use hayate_ui::widget::{
-    TextWidget, ButtonWidget, GridLayout,
+    AppTheme, TextWidget, ButtonWidget, GridLayout,
     HStack, VStack, Padding, Spacer, SplitViewWidget, SplitOrientation,
 };
 
 use crate::i18n::L;
 
-pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
+pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L, theme: Option<&AppTheme>) -> Box<dyn Widget> {
+    let themed = theme.is_some();
+    let (sec_size, lbl_size) = if themed { (14.0, 11.0) } else { (18.0, 13.0) };
     let section = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 18.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, sec_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
     };
     let label = |text: &str| -> Box<dyn Widget> {
-        Box::new(TextWidget::new(text, 13.0).with_engine(engine.clone()))
+        let mut w = TextWidget::new(text, lbl_size).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
+    };
+    let btn = |lbl: &str| -> Box<dyn Widget> {
+        let mut b = ButtonWidget::new(lbl);
+        if let Some(t) = theme { b = b.theme(t.button.clone()); }
+        Box::new(b)
     };
 
     let hstack = HStack::new(8.0)
-        .add(Box::new(ButtonWidget::new("L")))
-        .add(Box::new(ButtonWidget::new("C")))
-        .add(Box::new(ButtonWidget::new("R")));
+        .add(btn("L"))
+        .add(btn("C"))
+        .add(btn("R"));
 
     let vstack_demo = VStack::new(8.0)
-        .add(Box::new(ButtonWidget::new("Top")))
+        .add(btn("Top"))
         .add(Box::new(Spacer::with_min(20.0)))
-        .add(Box::new(ButtonWidget::new("Bot")));
+        .add(btn("Bot"));
 
     let stacks_row = HStack::new(32.0)
         .add(Box::new(VStack::new(4.0).add(label("HStack")).add(Box::new(hstack))))
@@ -36,12 +47,19 @@ pub fn build(engine: Rc<RefCell<TextEngine>>, l: &L) -> Box<dyn Widget> {
 
     let mut grid = GridLayout::new(3, 8.0);
     for i in 1..=6 {
-        grid.push(Box::new(ButtonWidget::new(format!("{i}"))));
+        let mut b = ButtonWidget::new(format!("{i}"));
+        if let Some(t) = theme { b = b.theme(t.button.clone()); }
+        grid.push(Box::new(b));
     }
 
+    let mk_pane_text = |text: &str| -> Box<dyn Widget> {
+        let mut w = TextWidget::new(text, 14.0).with_engine(engine.clone());
+        if themed { w = w.with_color(0, 0, 0); }
+        Box::new(w)
+    };
     let split = SplitViewWidget::new(
-        Box::new(Padding::all(8.0, Box::new(TextWidget::new(l.left_pane(), 14.0).with_engine(engine.clone())))),
-        Box::new(Padding::all(8.0, Box::new(TextWidget::new(l.right_pane(), 14.0).with_engine(engine.clone())))),
+        Box::new(Padding::all(8.0, mk_pane_text(l.left_pane()))),
+        Box::new(Padding::all(8.0, mk_pane_text(l.right_pane()))),
         SplitOrientation::Horizontal,
     );
 

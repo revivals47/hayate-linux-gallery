@@ -15,11 +15,15 @@ impl Demo for ButtonDemo {
         let primary = ButtonWidget::new("Primary").on_click(|| println!("button: primary"));
         let action  = ButtonWidget::new("Action") .on_click(|| println!("button: action"));
         let muted   = ButtonWidget::new("Muted");
+        // Disabled button — Win95 skins render the label with the etched
+        // highlight/shadow double-draw; modern skins keep the fg color.
+        let off     = ButtonWidget::new("Disabled").disabled();
         Box::new(
             HStack::new(8.0)
                 .add(Box::new(primary))
                 .add(Box::new(action))
-                .add(Box::new(muted)),
+                .add(Box::new(muted))
+                .add(Box::new(off)),
         )
     }
 }

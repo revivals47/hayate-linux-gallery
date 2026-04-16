@@ -15,6 +15,7 @@ mod context_menu;
 mod dropdown;
 mod grid;
 mod group_box;
+mod resize_grip;
 mod scroll_bar;
 mod image;
 mod menu_bar;

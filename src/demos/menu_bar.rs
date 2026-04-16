@@ -12,9 +12,12 @@ impl Demo for MenuBarDemo {
         match lang { Lang::Ja => "メニューバー", Lang::En => "Menu Bar" }
     }
     fn build(&self, ctx: &DemoCtx) -> Box<dyn Widget> {
+        // `&X` marks the mnemonic; under --win95 the char gets an
+        // underline, modern themes just strip the `&`.
         let (file, edit, new, open, save, undo, redo) = match ctx.lang {
-            Lang::Ja => ("ファイル", "編集", "新規", "開く", "保存", "元に戻す", "やり直し"),
-            Lang::En => ("File", "Edit", "New", "Open", "Save", "Undo", "Redo"),
+            Lang::Ja => ("ファイル(&F)", "編集(&E)", "新規(&N)", "開く(&O)",
+                         "保存(&S)", "元に戻す(&U)", "やり直し(&R)"),
+            Lang::En => ("&File", "&Edit", "&New", "&Open", "&Save", "&Undo", "&Redo"),
         };
         let file_menu = Menu::new(file)
             .add_action(new,  || println!("menu: new"))

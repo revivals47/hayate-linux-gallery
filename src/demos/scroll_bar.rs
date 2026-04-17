@@ -53,6 +53,17 @@ impl Widget for ScrollBarShowcase {
         self.inner.borrow_mut().event(event)
     }
 
+    /// Forward overlay-priority events to the inner bar. ScrollBar
+    /// overrides `event_overlay` for pointer capture while dragging
+    /// (so the drag ends reliably even when the cursor exits the
+    /// widget rect / window). The default Widget impl walks
+    /// `children_mut()` which we don't expose because `inner` lives
+    /// inside a RefCell — without this forward the capture path is
+    /// silently dead.
+    fn event_overlay(&mut self, event: &WidgetEvent) -> EventResponse {
+        self.inner.borrow_mut().event_overlay(event)
+    }
+
     fn dirty(&self) -> bool { self.inner.borrow().dirty() }
     fn clear_dirty(&mut self) { self.inner.borrow_mut().clear_dirty() }
 

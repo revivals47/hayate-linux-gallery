@@ -148,7 +148,16 @@ impl Shell {
 /// the builders explicitly so the Win95 intent is visible from this
 /// file — the same pattern used for `Win95FrameWidget` in `build_root`.
 fn build_status_bar(theme_id: ThemeId, lang: Lang, demo_count: usize) -> StatusBar {
-    let mut bar = StatusBar::new(STATUS_BAR_HEIGHT).with_bg(192, 192, 192, 255);
+    // Pick a footer bg that matches the skin's general surface colour
+    // — Win95/XP Luna share the content canvas with the menu bar, so a
+    // contrasting grey footer stands out. Fall back to Win95 grey for
+    // themes that don't ship with a distinct surface tint.
+    let bg = match theme_id {
+        ThemeId::XpLuna  => (236, 233, 216),  // cream (MenuTheme::xp_luna bar_bg)
+        ThemeId::Win10   => (243, 243, 243),
+        _                => (192, 192, 192),
+    };
+    let mut bar = StatusBar::new(STATUS_BAR_HEIGHT).with_bg(bg.0, bg.1, bg.2, 255);
     if theme_id == ThemeId::Win95 {
         bar = bar.with_panel_mode(true).with_resize_grip(true);
     }

@@ -57,7 +57,7 @@ impl ThemeId {
         }
     }
 
-    fn label(self) -> &'static str {
+    pub fn label(self) -> &'static str {
         match self {
             ThemeId::Default     => "Default",
             ThemeId::Win95       => "Win95",

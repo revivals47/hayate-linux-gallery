@@ -9,8 +9,10 @@ use std::rc::Rc;
 
 use hayate_ui::render::TextEngine;
 use hayate_ui::widget::core::Widget;
+use hayate_ui::widget::win95::STATUS_BAR_HEIGHT;
 use hayate_ui::widget::{
-    AppTheme, HStack, Padding, Spacer, TabEntry, TabViewWidget, TextWidget, VStack,
+    AppTheme, HStack, Padding, Spacer, StatusBar, StatusItem, TabEntry,
+    TabViewWidget, TextWidget, VStack, Win95FrameWidget,
 };
 
 use crate::chrome::ThemeId;
@@ -101,7 +103,7 @@ impl Shell {
         Self { engine, theme_id, lang, app_theme }
     }
 
-    /// Assemble the full root widget: chrome bar + content.
+    /// Assemble the full root widget: chrome bar + content + status bar.
     pub fn build_root(&self) -> Box<dyn Widget> {
         let themed = self.app_theme.is_some();
         let ctx = DemoCtx {
@@ -113,6 +115,47 @@ impl Shell {
             self.engine.clone(), self.theme_id, self.lang, self.app_theme.as_ref(),
         );
         let content = build_content(&ctx, themed);
-        Box::new(VStack::new(0.0).add(chrome_bar).add(content))
+        let status_bar = build_status_bar(self.theme_id, self.lang, demo::all().len());
+        let shell: Box<dyn Widget> = Box::new(
+            VStack::new(0.0)
+                .add(chrome_bar)
+                .add_flex(content, 1.0)
+                .add(Box::new(status_bar)),
+        );
+        // Win95FrameWidget paints a Win95-palette 2-stage raised bevel, so it
+        // only fits under the Win95 skin. Other themes (macOS / XP / Win10)
+        // ship their own window aesthetics and would clash with a hard grey
+        // bevel, so they keep the naked VStack at the root.
+        if self.theme_id == ThemeId::Win95 {
+            Box::new(Win95FrameWidget::from_box(shell))
+        } else {
+            shell
+        }
     }
+}
+
+/// Win95-style bottom status bar: theme on the left, demo count + lang on the
+/// right. The bar paints as 22 px BUTTON_FACE grey with a 1 px raised top
+/// edge when the app is running under a Win95-family skin (handled by
+/// `StatusBar::inject_theme`); other skins keep the hard-coded grey so the
+/// footer is always present. Labels render through
+/// `AppTheme::bitmap_text_default` when a bitmap font is wired in.
+fn build_status_bar(theme_id: ThemeId, lang: Lang, demo_count: usize) -> StatusBar {
+    let mut bar = StatusBar::new(STATUS_BAR_HEIGHT).with_bg(192, 192, 192, 255);
+    let theme_label = match lang {
+        Lang::En => format!("Theme: {}", theme_id.label()),
+        Lang::Ja => format!("テーマ: {}", theme_id.label()),
+    };
+    let demos_label = match lang {
+        Lang::En => format!("{demo_count} demos"),
+        Lang::Ja => format!("{demo_count} デモ"),
+    };
+    let lang_label = match lang {
+        Lang::En => "EN",
+        Lang::Ja => "日本語",
+    };
+    bar.add_left(StatusItem::new(theme_label).with_color(0, 0, 0));
+    bar.add_right(StatusItem::new(lang_label).with_color(0, 0, 0));
+    bar.add_right(StatusItem::new(demos_label).with_color(0, 0, 0));
+    bar
 }

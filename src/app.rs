@@ -140,8 +140,18 @@ impl Shell {
 /// `StatusBar::inject_theme`); other skins keep the hard-coded grey so the
 /// footer is always present. Labels render through
 /// `AppTheme::bitmap_text_default` when a bitmap font is wired in.
+///
+/// Under the Win95 skin the bar also opts in to **panel mode** (each
+/// `StatusItem` paints inside its own sunken 2-stage bevel with a small
+/// gap) and shows a **resize grip** at the right edge. `inject_theme`
+/// would auto-enable both via the `menu.panel_bevel` sniff, but we call
+/// the builders explicitly so the Win95 intent is visible from this
+/// file — the same pattern used for `Win95FrameWidget` in `build_root`.
 fn build_status_bar(theme_id: ThemeId, lang: Lang, demo_count: usize) -> StatusBar {
     let mut bar = StatusBar::new(STATUS_BAR_HEIGHT).with_bg(192, 192, 192, 255);
+    if theme_id == ThemeId::Win95 {
+        bar = bar.with_panel_mode(true).with_resize_grip(true);
+    }
     let theme_label = match lang {
         Lang::En => format!("Theme: {}", theme_id.label()),
         Lang::Ja => format!("テーマ: {}", theme_id.label()),

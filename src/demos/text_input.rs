@@ -17,7 +17,7 @@ impl Demo for TextInputDemo {
             Lang::En => "Type here...",
         };
         Box::new(
-            TextInputWidget::new(ctx.engine.clone())
+            TextInputWidget::new()
                 .with_placeholder(placeholder)
                 .with_width(240.0),
         )

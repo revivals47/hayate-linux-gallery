@@ -40,8 +40,8 @@ impl ScrollBarShowcase {
 }
 
 impl Widget for ScrollBarShowcase {
-    fn id(&self) -> Option<WidgetId> {
-        Some(self.id)
+    fn id(&self) -> WidgetId {
+        self.id
     }
 
     fn layout(&mut self, c: &Constraints) -> Size {

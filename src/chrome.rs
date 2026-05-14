@@ -10,7 +10,7 @@ use std::rc::Rc;
 
 use hayate_ui::render::TextEngine;
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{AppTheme, ButtonTheme, ButtonWidget, HStack, Padding, TextWidget};
+use hayate_ui::widget::{AppTheme, ButtonTheme, ButtonWidget, HStack, Padding, LabelWidget};
 
 use crate::demo::Lang;
 
@@ -98,7 +98,7 @@ pub fn build(
 ) -> Box<dyn Widget> {
     let themed = theme.is_some();
     let label_text = if current_lang == Lang::Ja { "テーマ:" } else { "Theme:" };
-    let mut theme_label = TextWidget::new(label_text, if themed { 11.0 } else { 13.0 })
+    let mut theme_label = LabelWidget::new(label_text, if themed { 11.0 } else { 13.0 })
         .with_engine(engine.clone());
     if themed { theme_label = theme_label.with_color(0, 0, 0); }
 
@@ -143,7 +143,7 @@ pub fn build(
         row = row.add(theme_btn(id, id == current_theme));
     }
     row = row
-        .add(Box::new(TextWidget::new("  ", 11.0).with_engine(engine.clone())))
+        .add(Box::new(LabelWidget::new("  ", 11.0).with_engine(engine.clone())))
         .add(lang_btn(Lang::En, "EN", current_lang == Lang::En))
         .add(lang_btn(Lang::Ja, "JA", current_lang == Lang::Ja));
 

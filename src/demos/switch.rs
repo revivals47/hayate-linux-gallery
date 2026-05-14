@@ -1,5 +1,5 @@
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{HStack, SwitchWidget, TextWidget};
+use hayate_ui::widget::{HStack, SwitchWidget, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -16,7 +16,7 @@ impl Demo for SwitchDemo {
             Lang::Ja => ("ダークモード", "通知"),
             Lang::En => ("Dark Mode", "Notifications"),
         };
-        let label = |s: &str| TextWidget::new(s, 13.0).with_engine(ctx.engine.clone());
+        let label = |s: &str| LabelWidget::new(s, 13.0).with_engine(ctx.engine.clone());
         Box::new(
             HStack::new(16.0)
                 .add(Box::new(label(dark)))

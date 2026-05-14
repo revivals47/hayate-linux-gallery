@@ -12,7 +12,7 @@ use hayate_ui::widget::core::Widget;
 use hayate_ui::widget::win95::STATUS_BAR_HEIGHT;
 use hayate_ui::widget::{
     AppTheme, HStack, Padding, Spacer, StatusBar, StatusItem, TabEntry,
-    TabViewWidget, TextWidget, VStack, Win95FrameWidget,
+    LabelWidget, TabViewWidget, VStack, Win95FrameWidget,
 };
 
 use crate::chrome::ThemeId;
@@ -34,13 +34,13 @@ fn demo_card(
 
     let header = HStack::new(8.0)
         .add(Box::new(
-            TextWidget::new(title, 14.0)
+            LabelWidget::new(title, 14.0)
                 .with_engine(engine.clone())
                 .with_color(tr, tg, tb),
         ))
         .add(Box::new(Spacer::new()))
         .add(Box::new(
-            TextWidget::new(id, 10.0)
+            LabelWidget::new(id, 10.0)
                 .with_engine(engine.clone())
                 .with_color(ir, ig, ib),
         ));

@@ -5,6 +5,7 @@ use hayate_ui::render::Renderer;
 use hayate_ui::scroll::delegate::ItemRect;
 use hayate_ui::widget::{ScrollBar, ScrollBarOrientation};
 use hayate_ui::widget::core::{Constraints, EventResponse, Size, Widget, WidgetEvent};
+use hayate_ui::widget::focus::WidgetId;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -13,6 +14,9 @@ use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 /// parent Demo system does not wire real scroll content — the goal is
 /// to show the bar chrome under every theme.
 struct ScrollBarShowcase {
+    /// Stable widget identity (Track B Option I). Allocated once at
+    /// construction; never changes for this instance's lifetime.
+    id: WidgetId,
     inner: RefCell<ScrollBar>,
     offset: Rc<Cell<f32>>,
 }
@@ -28,6 +32,7 @@ impl ScrollBarShowcase {
         sb.set_content_size(2000.0);
         sb.set_viewport_size(400.0);
         Self {
+            id: hayate_ui::widget::alloc_widget_id(),
             inner: RefCell::new(sb.with_shared_offset(Rc::clone(&offset))),
             offset,
         }
@@ -35,6 +40,10 @@ impl ScrollBarShowcase {
 }
 
 impl Widget for ScrollBarShowcase {
+    fn id(&self) -> Option<WidgetId> {
+        Some(self.id)
+    }
+
     fn layout(&mut self, c: &Constraints) -> Size {
         // Fix a tall viewport so the track has enough room to see the
         // full arrow caps + a decent thumb travel.

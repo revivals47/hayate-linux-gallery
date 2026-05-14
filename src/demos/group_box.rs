@@ -1,5 +1,5 @@
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{CheckboxWidget, GroupBoxWidget, TextWidget, VStack};
+use hayate_ui::widget::{CheckboxWidget, GroupBoxWidget, LabelWidget, VStack};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -16,7 +16,7 @@ impl Demo for GroupBoxDemo {
             VStack::new(6.0)
                 .add(Box::new(CheckboxWidget::new("Enable X")))
                 .add(Box::new(CheckboxWidget::new("Enable Y")))
-                .add(Box::new(TextWidget::new("Grouped content", 14.0))),
+                .add(Box::new(LabelWidget::new("Grouped content", 14.0))),
         );
         Box::new(GroupBoxWidget::new("Options", inner))
     }

@@ -4,7 +4,7 @@
 // right-click handler to `menu.show(click_x, click_y)`.
 
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, TextWidget};
+use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -24,7 +24,7 @@ impl Demo for ContextMenuDemo {
         let b = ButtonWidget::new(btn).on_click(|| {
             println!("context_menu: would show at cursor (copy / paste / delete)");
         });
-        let label = TextWidget::new(note, 11.0).with_engine(ctx.engine.clone());
+        let label = LabelWidget::new(note, 11.0).with_engine(ctx.engine.clone());
         Box::new(HStack::new(12.0).add(Box::new(b)).add(Box::new(label)))
     }
 }

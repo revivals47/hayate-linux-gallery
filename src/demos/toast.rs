@@ -4,7 +4,7 @@
 // `.show(msg, level, duration)` from anywhere via a shared handle.
 
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, TextWidget};
+use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -24,7 +24,7 @@ impl Demo for ToastDemo {
         let info_btn  = ButtonWidget::new(info).on_click(|| println!("toast: info"));
         let warn_btn  = ButtonWidget::new(warn).on_click(|| println!("toast: warn"));
         let err_btn   = ButtonWidget::new(err).on_click(|| println!("toast: error"));
-        let label = TextWidget::new(note, 11.0).with_engine(ctx.engine.clone());
+        let label = LabelWidget::new(note, 11.0).with_engine(ctx.engine.clone());
         Box::new(
             HStack::new(8.0)
                 .add(Box::new(info_btn))

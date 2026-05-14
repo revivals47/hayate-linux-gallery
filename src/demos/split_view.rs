@@ -1,5 +1,5 @@
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{SplitOrientation, SplitViewWidget, TextWidget};
+use hayate_ui::widget::{SplitOrientation, SplitViewWidget, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -16,8 +16,8 @@ impl Demo for SplitViewDemo {
             Lang::Ja => ("左ペイン", "右ペイン"),
             Lang::En => ("Left pane", "Right pane"),
         };
-        let left  = Box::new(TextWidget::new(l, 13.0).with_engine(ctx.engine.clone()));
-        let right = Box::new(TextWidget::new(r, 13.0).with_engine(ctx.engine.clone()));
+        let left  = Box::new(LabelWidget::new(l, 13.0).with_engine(ctx.engine.clone()));
+        let right = Box::new(LabelWidget::new(r, 13.0).with_engine(ctx.engine.clone()));
         Box::new(
             SplitViewWidget::new(left, right, SplitOrientation::Horizontal)
                 .with_ratio(0.4)

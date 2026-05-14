@@ -5,7 +5,7 @@
 // the App root and call `.show()` from anywhere via a shared handle.
 
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, TextWidget};
+use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -25,7 +25,7 @@ impl Demo for AlertDialogDemo {
         let btn = ButtonWidget::new(btn_label).on_click(|| {
             println!("alert: user requested dialog (would overlay the entire window)");
         });
-        let label = TextWidget::new(note, 11.0).with_engine(ctx.engine.clone());
+        let label = LabelWidget::new(note, 11.0).with_engine(ctx.engine.clone());
         Box::new(HStack::new(12.0).add(Box::new(btn)).add(Box::new(label)))
     }
 }

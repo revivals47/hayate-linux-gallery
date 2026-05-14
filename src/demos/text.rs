@@ -1,5 +1,5 @@
 use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{TextWidget, VStack};
+use hayate_ui::widget::{LabelWidget, VStack};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -13,13 +13,13 @@ impl Demo for TextDemo {
     }
     fn build(&self, ctx: &DemoCtx) -> Box<dyn Widget> {
         let (default, larger) = match ctx.lang {
-            Lang::Ja => ("TextWidget のデフォルトスタイルです。", "大きめテキスト (18px)"),
-            Lang::En => ("This is a TextWidget with default styling.", "Larger text (18px)"),
+            Lang::Ja => ("LabelWidget のデフォルトスタイルです。", "大きめテキスト (18px)"),
+            Lang::En => ("This is a LabelWidget with default styling.", "Larger text (18px)"),
         };
         Box::new(
             VStack::new(6.0)
-                .add(Box::new(TextWidget::new(default, 13.0)))
-                .add(Box::new(TextWidget::new(larger, 18.0))),
+                .add(Box::new(LabelWidget::new(default, 13.0)))
+                .add(Box::new(LabelWidget::new(larger, 18.0))),
         )
     }
 }

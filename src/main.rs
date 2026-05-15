@@ -31,10 +31,13 @@ fn main() {
             ThemeId::MacOsBigSur => (&hayate_ui::style::theme::MACOS_BIG_SUR_THEME, TitleBarTheme::macos_big_sur()),
             ThemeId::Default     => unreachable!(),
         };
+        // Window decoration Phase 1: `App::new` defaults to
+        // `Decorations::SystemLike`, so `.with_csd(title)` is dropped.
+        // `.with_titlebar_theme(...)` is retained so the gallery can
+        // continue to showcase the 5 TitleBarTheme presets per RFC §3.4.
         app = app
             .with_theme(base_theme)
             .with_app_theme(app_theme.clone())
-            .with_csd(title)
             .with_titlebar_theme(bar_theme);
     }
 

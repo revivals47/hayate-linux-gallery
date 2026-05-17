@@ -1,5 +1,5 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::toolbar::ToolbarWidget;
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::toolbar::ToolbarWidget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

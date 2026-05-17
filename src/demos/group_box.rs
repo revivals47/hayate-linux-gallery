@@ -1,5 +1,7 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{CheckboxWidget, GroupBoxWidget, LabelWidget, VStack};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{LabelWidget, VStack};
+use hayate_kit::widget::checkbox::CheckboxWidget;
+use hayate_kit::widget::group_box::GroupBoxWidget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

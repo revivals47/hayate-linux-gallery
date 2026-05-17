@@ -1,5 +1,5 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{LabelWidget, VStack};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{LabelWidget, VStack};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

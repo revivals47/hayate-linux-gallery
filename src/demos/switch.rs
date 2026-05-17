@@ -1,5 +1,6 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{HStack, SwitchWidget, LabelWidget};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{HStack, LabelWidget};
+use hayate_kit::widget::switch::SwitchWidget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

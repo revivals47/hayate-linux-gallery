@@ -1,5 +1,5 @@
-use hayate_ui::widget::BreadcrumbWidget;
-use hayate_ui::widget::core::Widget;
+use hayate_kit::widget::breadcrumb::BreadcrumbWidget;
+use hayate_platform::widget::core::Widget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

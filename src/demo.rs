@@ -11,9 +11,9 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use hayate_ui::render::TextEngine;
-use hayate_ui::widget::AppTheme;
-use hayate_ui::widget::core::Widget;
+use hayate_platform::render::TextEngine;
+use hayate_platform::widget_themes::app::AppTheme;
+use hayate_platform::widget::core::Widget;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum Lang {

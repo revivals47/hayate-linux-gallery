@@ -5,8 +5,13 @@ mod chrome;
 mod demo;
 mod demos;
 
-use hayate_ui::App;
-use hayate_ui::widget::titlebar_theme::TitleBarTheme;
+use hayate_platform::App;
+// Phase L2 Stage 3 Option C: vendor preset factories live in L2
+// (L0 v2.0 §17 + L0 v0.5 round 4: retro/vendor preset L2 配置確定).
+use hayate_kit::style::widget_theme_presets::titlebar::{
+    titlebar_theme_mac_os9, titlebar_theme_macos_big_sur, titlebar_theme_win10,
+    titlebar_theme_win95, titlebar_theme_xp_luna,
+};
 
 use crate::app::Shell;
 use crate::chrome::ThemeId;
@@ -24,11 +29,11 @@ fn main() {
 
     if let Some(ref app_theme) = shell.app_theme {
         let (base_theme, bar_theme) = match shell.theme_id {
-            ThemeId::Win95       => (&hayate_ui::style::theme::WIN95_THEME,        TitleBarTheme::win95()),
-            ThemeId::MacOs9      => (&hayate_ui::style::theme::MACOS9_THEME,       TitleBarTheme::mac_os9()),
-            ThemeId::XpLuna      => (&hayate_ui::style::theme::XP_LUNA_THEME,      TitleBarTheme::xp_luna()),
-            ThemeId::Win10       => (&hayate_ui::style::theme::WIN10_THEME,        TitleBarTheme::win10()),
-            ThemeId::MacOsBigSur => (&hayate_ui::style::theme::MACOS_BIG_SUR_THEME, TitleBarTheme::macos_big_sur()),
+            ThemeId::Win95       => (&hayate_kit::style::theme::WIN95_THEME,        titlebar_theme_win95()),
+            ThemeId::MacOs9      => (&hayate_kit::style::theme::MACOS9_THEME,       titlebar_theme_mac_os9()),
+            ThemeId::XpLuna      => (&hayate_kit::style::theme::XP_LUNA_THEME,      titlebar_theme_xp_luna()),
+            ThemeId::Win10       => (&hayate_kit::style::theme::WIN10_THEME,        titlebar_theme_win10()),
+            ThemeId::MacOsBigSur => (&hayate_kit::style::theme::MACOS_BIG_SUR_THEME, titlebar_theme_macos_big_sur()),
             ThemeId::Default     => unreachable!(),
         };
         // Window decoration Phase 1: `App::new` defaults to

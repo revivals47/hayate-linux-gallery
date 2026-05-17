@@ -1,5 +1,5 @@
-use hayate_ui::widget::TextInputWidget;
-use hayate_ui::widget::core::Widget;
+use hayate_kit::widget::text_input_widget::TextInputWidget;
+use hayate_platform::widget::core::Widget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

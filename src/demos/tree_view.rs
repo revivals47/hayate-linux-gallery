@@ -1,5 +1,5 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{TreeNode, TreeViewWidget};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::tree_view::{TreeNode, TreeViewWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

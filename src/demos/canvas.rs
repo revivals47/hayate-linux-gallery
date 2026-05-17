@@ -1,5 +1,5 @@
-use hayate_ui::widget::CanvasViewWidget;
-use hayate_ui::widget::core::Widget;
+use hayate_kit::widget::canvas_view::CanvasViewWidget;
+use hayate_platform::widget::core::Widget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -20,7 +20,7 @@ impl Demo for CanvasDemo {
                 for i in 0..6 {
                     let w = 20.0 + (i as f32) * 8.0;
                     let c = 60 + (i * 28) as u8;
-                    let r_rect = hayate_ui::scroll::delegate::ItemRect::new(
+                    let r_rect = hayate_platform::scroll::delegate::ItemRect::new(
                         cx - w * 0.5, cy - w * 0.5, w, w,
                     );
                     r.fill_rect(&r_rect, c, c / 2, 255 - c / 2, 255);

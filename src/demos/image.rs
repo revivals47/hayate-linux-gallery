@@ -1,5 +1,5 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ImageWidget, ScaleMode};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::image_widget::{ImageWidget, ScaleMode};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

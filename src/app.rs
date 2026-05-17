@@ -7,13 +7,14 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use hayate_ui::render::TextEngine;
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::win95::STATUS_BAR_HEIGHT;
-use hayate_ui::widget::{
-    AppTheme, HStack, Padding, Spacer, StatusBar, StatusItem, TabEntry,
-    LabelWidget, TabViewWidget, VStack, Win95FrameWidget,
-};
+use hayate_platform::render::TextEngine;
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::win95::STATUS_BAR_HEIGHT;
+use hayate_platform::widget_themes::app::AppTheme;
+use hayate_kit::widget::{HStack, LabelWidget, Padding, Spacer, VStack};
+use hayate_kit::widget::status_bar::{StatusBar, StatusItem};
+use hayate_kit::widget::tab_view::{TabEntry, TabViewWidget};
+use hayate_kit::widget::win95_frame::Win95FrameWidget;
 
 use crate::chrome::ThemeId;
 use crate::demo::{self, Category, DemoCtx, Lang};

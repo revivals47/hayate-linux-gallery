@@ -1,5 +1,6 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, GridLayout};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::ButtonWidget;
+use hayate_kit::widget::grid_layout::GridLayout;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

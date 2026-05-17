@@ -3,8 +3,8 @@
 // print; a real app mounts one ToastWidget at the root and calls
 // `.show(msg, level, duration)` from anywhere via a shared handle.
 
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

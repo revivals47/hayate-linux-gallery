@@ -1,5 +1,6 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ProgressBarWidget, VStack};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::VStack;
+use hayate_kit::widget::progress_bar::ProgressBarWidget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

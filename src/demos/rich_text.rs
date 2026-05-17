@@ -1,6 +1,6 @@
-use hayate_ui::widget::RichTextWidget;
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::VStack;
+use hayate_kit::widget::text_widget::RichTextWidget;
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::VStack;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

@@ -3,8 +3,8 @@
 // other widgets. The gallery shows a trigger button; real apps wire the
 // right-click handler to `menu.show(click_x, click_y)`.
 
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

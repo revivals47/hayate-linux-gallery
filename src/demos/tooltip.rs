@@ -1,6 +1,6 @@
-use hayate_ui::widget::TooltipWidget;
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack};
+use hayate_kit::widget::tooltip::TooltipWidget;
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{ButtonWidget, HStack};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

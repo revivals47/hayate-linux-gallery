@@ -704,13 +704,25 @@ checksum = "4f467dd6dccf739c208452f8014c75c18bb8301b050ad1cfb27153803edb0f51"
 name = "hayate-gallery"
 version = "0.2.0"
 dependencies = [
- "hayate-ui",
+ "hayate-kit",
+ "hayate-platform",
  "inventory",
  "xkbcommon",
 ]
 
 [[package]]
-name = "hayate-ui"
+name = "hayate-kit"
+version = "0.1.0"
+dependencies = [
+ "hayate-platform",
+ "regex",
+ "tiny-skia",
+ "vte",
+ "xkbcommon",
+]
+
+[[package]]
+name = "hayate-platform"
 version = "0.1.0"
 dependencies = [
  "accesskit",
@@ -724,11 +736,9 @@ dependencies = [
  "font8x8",
  "libc",
  "memmap2",
- "regex",
  "rustix",
  "tiny-skia",
  "unicode-segmentation",
- "vte",
  "wayland-client",
  "wayland-cursor",
  "wayland-protocols",

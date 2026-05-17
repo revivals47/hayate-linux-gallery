@@ -4,8 +4,8 @@
 // exposes a trigger button and logs; real apps construct AlertDialog at
 // the App root and call `.show()` from anywhere via a shared handle.
 
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{ButtonWidget, HStack, LabelWidget};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::{ButtonWidget, HStack, LabelWidget};
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

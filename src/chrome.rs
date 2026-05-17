@@ -8,9 +8,16 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use hayate_ui::render::TextEngine;
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{AppTheme, ButtonTheme, ButtonWidget, HStack, Padding, LabelWidget};
+use hayate_platform::render::TextEngine;
+use hayate_platform::widget::core::Widget;
+use hayate_platform::widget_themes::app::AppTheme;
+use hayate_platform::widget_themes::button::ButtonTheme;
+use hayate_kit::widget::{ButtonWidget, HStack, LabelWidget, Padding};
+// Phase L2 Stage 3 Option C: vendor preset factories live in L2
+// (L0 v2.0 §17 + L0 v0.5 round 4: retro/vendor preset L2 配置確定).
+use hayate_kit::style::widget_theme_presets::app::{
+    app_theme_mac_os9, app_theme_macos_big_sur, app_theme_win10, app_theme_win95, app_theme_xp_luna,
+};
 
 use crate::demo::Lang;
 
@@ -38,11 +45,11 @@ impl ThemeId {
     pub fn app_theme(self) -> Option<AppTheme> {
         match self {
             ThemeId::Default     => None,
-            ThemeId::Win95       => Some(AppTheme::win95()),
-            ThemeId::MacOs9      => Some(AppTheme::mac_os9()),
-            ThemeId::XpLuna      => Some(AppTheme::xp_luna()),
-            ThemeId::Win10       => Some(AppTheme::win10()),
-            ThemeId::MacOsBigSur => Some(AppTheme::macos_big_sur()),
+            ThemeId::Win95       => Some(app_theme_win95()),
+            ThemeId::MacOs9      => Some(app_theme_mac_os9()),
+            ThemeId::XpLuna      => Some(app_theme_xp_luna()),
+            ThemeId::Win10       => Some(app_theme_win10()),
+            ThemeId::MacOsBigSur => Some(app_theme_macos_big_sur()),
         }
     }
 
@@ -106,9 +113,9 @@ pub fn build(
         let base = theme.map(|t| t.button.clone()).unwrap_or_else(ButtonTheme::filled);
         let bt = if active {
             if themed {
-                base.clone().bg(hayate_ui::style::theme::Color::rgb(160, 160, 160))
+                base.clone().bg(hayate_kit::style::theme::Color::rgb(160, 160, 160))
             } else {
-                base.clone().bg(hayate_ui::style::theme::Color::rgb(40, 110, 200))
+                base.clone().bg(hayate_kit::style::theme::Color::rgb(40, 110, 200))
             }
         } else {
             base
@@ -124,9 +131,9 @@ pub fn build(
         let base = theme.map(|t| t.button.clone()).unwrap_or_else(ButtonTheme::filled);
         let bt = if active {
             if themed {
-                base.clone().bg(hayate_ui::style::theme::Color::rgb(160, 160, 160))
+                base.clone().bg(hayate_kit::style::theme::Color::rgb(160, 160, 160))
             } else {
-                base.clone().bg(hayate_ui::style::theme::Color::rgb(40, 110, 200))
+                base.clone().bg(hayate_kit::style::theme::Color::rgb(40, 110, 200))
             }
         } else {
             base

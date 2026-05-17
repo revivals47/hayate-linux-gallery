@@ -1,5 +1,5 @@
-use hayate_ui::widget::DropdownWidget;
-use hayate_ui::widget::core::Widget;
+use hayate_kit::widget::dropdown::DropdownWidget;
+use hayate_platform::widget::core::Widget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

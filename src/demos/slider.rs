@@ -1,5 +1,6 @@
-use hayate_ui::widget::core::Widget;
-use hayate_ui::widget::{SliderWidget, VStack};
+use hayate_platform::widget::core::Widget;
+use hayate_kit::widget::VStack;
+use hayate_kit::widget::slider::SliderWidget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

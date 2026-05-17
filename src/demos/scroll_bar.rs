@@ -1,11 +1,11 @@
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 
-use hayate_ui::render::Renderer;
-use hayate_ui::scroll::delegate::ItemRect;
-use hayate_ui::widget::{ScrollBar, ScrollBarOrientation};
-use hayate_ui::widget::core::{Constraints, EventResponse, Size, Widget, WidgetEvent};
-use hayate_ui::widget::focus::WidgetId;
+use hayate_platform::render::Renderer;
+use hayate_platform::scroll::delegate::ItemRect;
+use hayate_kit::widget::scroll_bar::{ScrollBar, ScrollBarOrientation};
+use hayate_platform::widget::core::{Constraints, EventResponse, Size, Widget, WidgetEvent};
+use hayate_platform::widget::focus::WidgetId;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 
@@ -25,14 +25,14 @@ impl ScrollBarShowcase {
     fn new() -> Self {
         let offset = Rc::new(Cell::new(0.0));
         let mut sb = ScrollBar::new(ScrollBarOrientation::Vertical)
-            .theme(hayate_ui::widget::ScrollBarTheme::default());
+            .theme(hayate_platform::widget_themes::scroll_bar::ScrollBarTheme::default());
         // Content much larger than viewport so the thumb is smaller
         // than half the track — exercises the dither pattern on both
         // sides of the thumb.
         sb.set_content_size(2000.0);
         sb.set_viewport_size(400.0);
         Self {
-            id: hayate_ui::widget::alloc_widget_id(),
+            id: hayate_platform::widget::widget_id::alloc_widget_id(),
             inner: RefCell::new(sb.with_shared_offset(Rc::clone(&offset))),
             offset,
         }
@@ -76,7 +76,7 @@ impl Widget for ScrollBarShowcase {
     fn dirty(&self) -> bool { self.inner.borrow().dirty() }
     fn clear_dirty(&mut self) { self.inner.borrow_mut().clear_dirty() }
 
-    fn inject_theme(&mut self, theme: std::rc::Rc<hayate_ui::widget::AppTheme>) {
+    fn inject_theme(&mut self, theme: std::rc::Rc<hayate_platform::widget_themes::app::AppTheme>) {
         self.inner.borrow_mut().inject_theme(theme);
     }
 }

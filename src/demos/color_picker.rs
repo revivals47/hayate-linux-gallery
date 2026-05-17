@@ -1,6 +1,6 @@
-use hayate_ui::style::theme::Color;
-use hayate_ui::widget::ColorPickerWidget;
-use hayate_ui::widget::core::Widget;
+use hayate_kit::style::theme::Color;
+use hayate_kit::widget::color_picker::ColorPickerWidget;
+use hayate_platform::widget::core::Widget;
 
 use crate::demo::{Category, Demo, DemoCtx, DemoEntry, Lang};
 

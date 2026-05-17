@@ -7,5 +7,6 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 hayate-kit = { path = "../GUI_kit/crates/hayate-kit" }
+hayate-platform = { path = "../GUI_kit/crates/hayate-platform" }
 inventory = "0.3"
 xkbcommon = { version = "0.8", features = ["wayland"] }

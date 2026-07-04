@@ -25,7 +25,11 @@ fn main() {
         "Hayate Widget Gallery"
     };
 
-    let mut app = App::new(title, 1000, 700).with_min_size(600, 400);
+    // AT-SPI: the gallery root is a real widget tree (containers with
+    // children()), so the bridge exposes every accessible widget for free.
+    let mut app = App::new(title, 1000, 700)
+        .with_min_size(600, 400)
+        .with_a11y_bridge();
 
     if let Some(ref app_theme) = shell.app_theme {
         let (base_theme, bar_theme) = match shell.theme_id {

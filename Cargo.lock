@@ -717,6 +717,7 @@ dependencies = [
  "hayate-platform",
  "regex",
  "tiny-skia",
+ "unicode-width",
  "vte",
  "xkbcommon",
 ]
@@ -736,6 +737,7 @@ dependencies = [
  "font8x8",
  "libc",
  "memmap2",
+ "png",
  "rustix",
  "tiny-skia",
  "unicode-segmentation",
@@ -1495,6 +1497,12 @@ name = "unicode-segmentation"
 version = "1.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9629274872b2bfaf8d66f5f15725007f635594914870f65218920345aa11aa8c"
+
+[[package]]
+name = "unicode-width"
+version = "0.1.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7dd6e30e90baa6f72411720665d41d89b9a3d039dc45b8faea1ddd07f617f6af"
 
 [[package]]
 name = "unicode-xid"
